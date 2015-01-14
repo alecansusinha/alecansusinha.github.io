@@ -1,0 +1,179 @@
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+		<link rel="points" type="application/json" href="Trat_Adm.geojson">
+		<link rel="points2" type="application/json" href="CstlErsnLines.geojson">
+		<style>
+            #map { height: 100%;}
+            body { padding: 0; margin: 0 }
+            .info { padding: 6px 8px; font: 14px/18px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+        </style>
+	</head>
+	<body>
+        <div id="map-container">
+            <div id="buffer-bar">
+            </div>
+		    <div id="map">
+            </div> 
+        </div>
+        <script type="text/javascript">
+        var ProjFarmsSP;
+
+        function getColor(d) {
+    		return d > 7 ? '#FF33CC' :
+                   d > 3 ? '#002EB8' :
+        		   d > 2 ? '#A5273C' :
+                           '#FF3366';
+		}
+
+        function highlightFeature(e) {
+            var layer = e.target;
+
+            layer.setStyle({
+                weight: 2,
+                color: '#666'
+            });
+
+            info.update(layer.feature.properties);
+
+            if (!L.Browser.ie && !L.Browser.opera) {
+                layer.bringToFront();
+            }
+        }
+
+        function resetHighlight(e) {
+            ProjFarmsSP.resetStyle(e.target);
+            info.update();
+        }
+
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight
+            });
+        } 
+
+            // create a map in the "map" div
+            // set the view to Columbus and zoom
+            var map = L.map('map');
+            map.setView([13.54, 100.53], 14);
+            
+            // create an OpenStreetMap tile layer
+            L.tileLayer('http://{s}.tiles.mapbox.com/v3/alecansusinha.kmbi51k6/{z}/{x}/{y}.png', { 
+            				attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    						maxZoom: 18
+						}).addTo(map);
+
+			//L.geojson(Trat_Adm).addTo(map);
+
+            $.getJSON("CanalsSP.geojson", function(data) {
+                var CanalsSP = L.geoJson(data, {style:
+                            {
+                            weight: 5,
+                            opacity: 1,
+                            color: '#1f808e'
+                            }
+                        }
+                );
+ 
+                CanalsSP.addTo(map);
+            });
+
+			$.getJSON("SamutPrakanPonds.geojson", function(data) {
+    			var SPPonds = L.geoJson(data, {style:
+							{fillColor: '#7BA527',
+        					weight: 0.5,
+        					opacity: 1,
+        					color: '#B37D00',
+        					fillOpacity: 1}
+						}
+    			);
+ 
+    			SPPonds.addTo(map);
+  			});
+
+            $.getJSON("ProjFarmsSP.geojson", function(data) {
+                ProjFarmsSP = L.geoJson(data, {
+                        style: function (feature) {
+                            return {
+                                "fillColor": getColor(feature.properties.Moo),
+                                "fillOpacity": 1,
+                                "weight": 0.5,
+                                "opacity": 1,
+                                "color": '#B37D00',
+                            }
+                        },
+                        onEachFeature: onEachFeature
+                    }
+                );
+ 
+                ProjFarmsSP.addTo(map);
+            });
+
+  			//Adds all of the Mu Baan to the Map
+
+  			/*$.getJSON("Trat_Adm.geojson", function(data) {
+    			var Trat_Adm = L.geoJson(data, {style:
+							{fillColor: '#80006',
+        					weight: 2,
+        					opacity: 1,
+        					color: 'white',
+       						dashArray: '3',
+        					fillOpacity: 0}
+						}
+    			);
+ 
+    			Trat_Adm.addTo(map);
+  			});
+			
+
+			//L.geojson(CstlErsnLines.addTo(map);
+
+			$.getJSON("CstlErsnLines.geojson", function(data) {
+    			var CstlErsnLines = L.geoJson(data, 
+    				{
+						style: function (feature) {
+							return {
+        						"color": getColor(feature.properties.id),
+        						"opacity": 1
+							}
+    					}	
+					}
+				);
+ 
+    			CstlErsnLines.addTo(map);
+  			});*/
+			
+			
+
+            var info = L.control();
+
+			info.onAdd = function (map) {
+    			this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    			this.update();
+    			return this._div;
+				};
+
+			// method that we will use to update the control based on feature properties passed
+			info.update = function (props) {
+    			this._div.innerHTML = '<h4>Samut Prakan Water Quality</h4>' +  (props ?
+        		'<b>' + props.Owner + '</b><br /> Moo: ' + props.Moo + 
+                '<br /> Time (HH:MM): ' + props.Time + 
+                '<br /> Air Temp. (C): ' + props.Temp_Air + 
+                '<br /> Water Temp. (C): ' + props.Temp_Water +
+                '<br /> pH: ' + props.pH + 
+                '<br /> Alkalinity (ppm): ' + props.Alkalinity + 
+                '<br /> Ammonium (ppm): ' + props.Ammonium +
+                '<br /> Nitrite (ppm): ' + props.Nitrite +
+                '<br /> Dissolved Oxygen (g/L): ' + props.Oxygen
+        		: 'Tested November 2014');
+			};
+
+			info.addTo(map);
+                    
+            
+        </script>  
+	</body>
+</html>
