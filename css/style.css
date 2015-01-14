@@ -121,6 +121,7 @@ body{
 }
 .va-slice ul{
 	margin-top:20px;
+	list-style: none;
 }
 .va-slice ul li{
 	float:left;
