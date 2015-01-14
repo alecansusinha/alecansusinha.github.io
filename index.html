@@ -19,14 +19,10 @@
 		<!-- Fonts Used Google Links-->
 	</head>
 	<body>
-		<div id="va-accordion" class="va-container" style="margin-top:0px;">
-				<div class="va-nav">
-					<span class="va-nav-prev" style="top:10px;">Previous</span>
-					<span class="va-nav-next" style="bottom:10px;">Next</span>
-				</div>
+		<div id="va-accordion" class="va-container" style="margin-top:0px; width:100%; height: 100%;">
 				<div class="va-wrapper">
 					<div class="va-slice va-slice-color-1">
-						<h3 class="va-title">GIS by AA</h3>
+						<h3 class="va-title">About</h3>
 						<div class="va-content">
 							<p>About this site</p>
 							<ul>
@@ -37,7 +33,7 @@
 						</div>
 					</div>
 					<div class="va-slice va-slice-color-2">
-						<h3 class="va-title">Management</h3>
+						<h3 class="va-title">IUCN</h3>
 						<div class="va-content">
 							<p>Keith Johnson</p>
 							<ul>
@@ -71,5 +67,20 @@
 					</div>	
 				</div>
 			</div>
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+		<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="js/jquery.vaccordion.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('#va-accordion').vaccordion({
+					accordionH		: $(window).height(),
+					visibleSlices	: 4,
+					expandedHeight	: 100,
+					animOpacity		: 0.1,
+					contentAnimSpeed: 100
+				});
+			});
+		</script>
 	</body>
 </html>

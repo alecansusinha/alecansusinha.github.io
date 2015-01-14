@@ -3,7 +3,7 @@
 	// cache some values
 	var cache	= {
 			idx_expanded	: -1, // the index of the current expanded slice
-			sliceH			: 0,  // the default slice's height	
+			sliceH			: 25,  // the default slice's height	
 			current			: 0,  // controls the current slider position
 			totalSlices		: 0	  // total number of slices
 		},
@@ -53,8 +53,9 @@
 							// the current slice's height
 							itemHeight	= settings.expandedHeight;
 							// the height the other slices will have
-							othersHeight= Math.ceil( ( settings.accordionH - settings.expandedHeight ) / ( settings.visibleSlices - 1 ) );
-							
+							//othersHeight= Math.ceil( ( settings.accordionH - settings.expandedHeight ) / ( settings.visibleSlices - 1 ) );
+							othersHeight= 0;
+
 							// control the navigation buttons visibility
 							if( cache.idx_expanded > 0 )
 								$navPrev.fadeIn();
@@ -69,9 +70,9 @@
 						
 						// the animation parameters for the clicked slice
 						var	animParam	= { 
-											height	: itemHeight + 'px', 
+											height	: itemHeight + '%', 
 											opacity : 1,
-											top		: ( pos - 1 ) * othersHeight + 'px'
+											top		: ( pos - 1 ) * othersHeight + '%'
 										  };
 						
 						// animate the clicked slice and also its title (<h3>)
@@ -83,7 +84,7 @@
 						   .find('.va-title')
 						   .stop()
 						   .animate({
-								lineHeight	: cache.sliceH + 'px'
+								//lineHeight	: '100%'
 						   }, settings.animSpeed, settings.animEasing );	
 						   
 						// animate all the others
@@ -103,14 +104,14 @@
 							
 							$other.stop()
 								  .animate( {
-										top		: t + 'px',
-										height	: othersHeight + 'px',
+										top		: t + '%',
+										height	: othersHeight + '%',
 										opacity	: ( expanded ) ? 1 : settings.animOpacity
 								  }, settings.animSpeed, settings.animEasing, dfd.resolve )
 								  .find('.va-title')
 								  .stop()
 								  .animate({
-										lineHeight	: othersHeight + 'px'
+										//lineHeight	: '100%'
 								  }, settings.animSpeed, settings.animEasing )
 								  .end()
 								  .find('.va-content')
@@ -222,20 +223,21 @@
 							$slice.data( 'expanded', true );
 							cache.idx_expanded	= $slice.index();
 							itemHeight			= settings.expandedHeight;
-							othersHeight		= ( settings.accordionH - settings.expandedHeight ) / ( settings.visibleSlices - 1 );
-							
+							//othersHeight		= ( settings.accordionH - settings.expandedHeight ) / ( settings.visibleSlices - 1 );
+							othersHeight = 0;
+
 							$slice.stop()
 						          .animate({
-										height		: itemHeight + 'px', 
+										height		: itemHeight + '%', 
 										opacity 	: 1,
-										top			: ( dir === 1 ) ? ( pos - 2 ) * othersHeight + 'px' : pos * othersHeight + 'px'
+										top			: ( dir === 1 ) ? ( pos - 2 ) * othersHeight + '%' : pos * othersHeight + '%'
 								  }, settings.animSpeed, settings.animEasing, function() {
 										$slice.find('.va-content').fadeIn( settings.contentAnimSpeed );
 								  })
 								  .find('.va-title')
 								  .stop()
 								  .animate({
-										lineHeight	: cache.sliceH + 'px'
+										//lineHeight	: '100%'
 								  }, settings.animSpeed, settings.animEasing );
 						}
 						// if the slice is the one opened, lets close it
@@ -247,14 +249,14 @@
 							
 							$slice.stop()
 						          .animate({ 
-										height	: othersHeight + 'px', 
+										height	: othersHeight + '%', 
 										opacity : settings.animOpacity,
 										top		: ( dir === 1 ) ? '-=' + othersHeight : '+=' + settings.expandedHeight
 								  }, settings.animSpeed, settings.animEasing )
 								  .find('.va-title')
 								  .stop()
 								  .animate({
-										lineHeight	: othersHeight + 'px'
+										//lineHeight	: '100%'
 								  }, settings.animSpeed, settings.animEasing )
 								  .end()
 								  .find('.va-content')
@@ -263,8 +265,9 @@
 						// all the others..
 						else {
 							$slice.data( 'expanded', false );
-							othersHeight		= ( settings.accordionH - settings.expandedHeight ) / ( settings.visibleSlices - 1 );
-							
+							//othersHeight		= ( settings.accordionH - settings.expandedHeight ) / ( settings.visibleSlices - 1 );
+							othersHeight = 0;
+
 							$slice.stop()
 						          .animate({ 
 										top		: ( dir === 1 ) ? '-=' + othersHeight : '+=' + othersHeight
@@ -295,9 +298,9 @@
 					
 					var settings = {
 						// the accordion's width
-						accordionW		: 1000,
+						accordionW		: 100,
 						// the accordion's height
-						accordionH		: 450,
+						accordionH		: 100,
 						// number of visible slices
 						visibleSlices	: 3,
 						// the height of a opened slice
@@ -331,8 +334,9 @@
 							$navPrev		= $el.find('span.va-nav-prev');
 							
 						// each slice's height
-						cache.sliceH		= Math.ceil( settings.accordionH / settings.visibleSlices );
-						
+						//cache.sliceH		= Math.ceil( settings.accordionH / settings.visibleSlices );
+						cache.sliceH = 25
+
 						// total slices
 						cache.totalSlices	= $slices.length;
 						
@@ -344,8 +348,7 @@
 							
 						// set the accordion's width & height
 						$el.css({
-							width	: settings.accordionW + 'px',
-							height	: settings.accordionH + 'px'
+							
 						});
 						
 						// show / hide $navNext 
@@ -360,12 +363,12 @@
 						$slices.each(function(i){
 							var $slice	= $(this);
 							$slice.css({
-								top		: i * cache.sliceH + 'px',
-								height	: cache.sliceH + 'px'
+								top		: i * cache.sliceH + '%',
+								height	: cache.sliceH + '%'
 							}).data( 'position', (i + 1) );
 						})
 						.children('.va-title')
-						.css( 'line-height', cache.sliceH + 'px' );
+						.css( 'line-height', '100%' );
 						
 						// click event
 						$slices.bind('click.vaccordion', function(e) {
