@@ -49,6 +49,7 @@ body{
 	position:relative;
 	overflow:hidden;
 	background:#f5f1ee;
+	min-height: 480px;
 }
 
 .va-container2{
@@ -118,20 +119,26 @@ body{
 	left:25%;
 	width:50%;
 	display: inline-block;
+	top:5%;
+	margin-bottom: 5%;
 	position: absolute;
 	text-align: center;
 	color:#fff;
 }
 .va-content{
 	display:none;
-	margin-left: auto;
-	margin-right: auto;
+	position: absolute;
+	left:10%;
+	right:10%;
+	top:25%;
+	width: 100%;
 }
 .va-slice p{
 	font-size: 2em;
 	font-style: italic;
 	font-family:Georgia, serif;
-	text-indent: 5%;
+	width: 80%;
+	text-align: center;
 }
 .va-slice ul{
 	 display: inline-block;
@@ -144,6 +151,7 @@ body{
 .va-slice ul li{
 	float: left;
     padding: 2px 5px;
+    list-style: none;
 }
 .va-slice ul li a{
 	color:#000;
