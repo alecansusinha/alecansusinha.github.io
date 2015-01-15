@@ -134,12 +134,16 @@ body{
 	text-indent: 5%;
 }
 .va-slice ul{
-	margin-top:20px;
-	list-style: none;
+	 display: inline-block;
+     margin: 0;
+     padding: 0;
+        /* For IE, the outcast */
+    zoom:1;
+    *display: inline;
 }
 .va-slice ul li{
-	float:left;
-	margin:0px 2px;
+	float: left;
+    padding: 2px 5px;
 }
 .va-slice ul li a{
 	color:#000;
