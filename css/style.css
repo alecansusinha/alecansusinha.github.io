@@ -136,10 +136,20 @@ body{
 .va-slice p{
 	font-size: 2em;
 	font-style: italic;
-	font-family:Georgia, serif;
+	font-family: 'Arvo', serif;
 	width: 80%;
 	text-align: center;
+	color:#fff;
 }
+
+.va-slice h4{
+	font-size: 1.5em;
+	font-family: 'Arvo', serif;
+	width: 80%;
+	text-align: center;
+	color:#fff;
+}
+
 .va-slice ul{
 	 display: inline-block;
      margin: 0;
@@ -150,10 +160,20 @@ body{
 }
 .va-slice ul li{
 	float: left;
-    padding: 2px 5px;
     list-style: none;
 }
-.va-slice ul li a{
+
+.va-slice ul li img{
+	width:100%;
+	max-width: 200px;
+}
+
+.va-slice ul li a img{
+	width:100%;
+	max-width: 200px;
+}
+
+.va-slice11 ul li a{
 	color:#000;
 	background:#eede2f;
 	padding:3px 6px;
@@ -161,7 +181,7 @@ body{
 	font-family:'PT Sans', sans-serif;
 	text-transform:uppercase;
 }
-.va-slice ul li a:hover{
+.va-slice11 ul li a:hover{
 	background:#000;
 	color:#fff;
 	text-shadow:none;
@@ -187,4 +207,11 @@ body{
 }
 .va-nav span:hover{
 	opacity:1.0;
+}
+
+#caption {
+	position: absolute;
+	top:320px;
+	font-family: "Arvo", serif;
+	color: #fff;
 }
