@@ -1,0 +1,218 @@
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+         
+
+                <script src='data/exp_Survey112414.js' ></script>
+                
+                <script src='data/exp_VillageBounds.js' ></script>
+                
+                <script src='data/exp_RoadsBanBaKhamin.js' ></script>
+                
+                <script src='data/exp_POIBanBaKhamin.js' ></script>
+                
+                <script src='data/exp_RiverBanBaKhamin.js' ></script>
+                <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+    <link rel="stylesheet" type="text/css" href="css/own_style.css">
+    <link rel="stylesheet" href="css/label.css" />
+		<link rel="points" type="application/json" href="Trat_Adm.geojson">
+		<link rel="points2" type="application/json" href="CstlErsnLines.geojson">
+        <script src="js/Autolinker.min.js"></script>
+		<style>
+            #map { height: 100%;}
+            body { padding: 0; margin: 0 }
+            .info { padding: 6px 8px; font: 14px/18px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+            #back-button a { text-decoration: none; font: 14px/18px Arial, Helvetica, sans-serif; position:absolute; bottom: 1%; left: 1%; z-index: 999; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; padding: 5px;}
+        </style>
+        <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+        <script src="https://gist.github.com/raw/4504864/c9ef880071f959398b7cf0b687d4f37c352ea86d/leaflet-google.js"></script> 
+	</head>
+	<body>
+        <div id="map-container">
+            <div id="buffer-bar">
+            </div>
+		    <div id="map">
+            </div> 
+        </div>
+        <script type="text/javascript">
+
+        var feature_group = new L.featureGroup([]);
+
+        var raster_group = new L.LayerGroup([]);
+
+        var layerOrder=new Array();
+
+        var exp_POIBanBaKhaminJSON 
+
+
+        function highlightFeature(e) {
+            var layer = e.target;
+
+            layer.setStyle({
+                weight: 2,
+                color: '#666'
+            });
+
+            info.update(layer.feature.properties);
+
+            if (!L.Browser.ie && !L.Browser.opera) {
+                layer.bringToFront();
+            }
+        }
+
+        function resetHighlight(e) {
+            exp_POIBanBaKhaminJSON.resetStyle(e.target);
+            info.update();
+        }
+
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight
+            });
+        } 
+
+            // create a map in the "map" div
+            // set the view to Columbus and zoom
+            var map = L.map('map');
+            map.fitBounds([[13.9829797539,102.104964467],[13.9994012745,102.129319174]]);
+            var googleLayer = new L.Google('SATELLITE');
+            map.addLayer(googleLayer); 
+            
+            // create an OpenStreetMap tile layer
+            /*L.tileLayer('http://{s}.tiles.mapbox.com/v3/alecansusinha.kmbi51k6/{z}/{x}/{y}.png', { 
+            				attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    						maxZoom: 18
+						}).addTo(map);*/
+
+			//L.geojson(Trat_Adm).addTo(map);
+			
+            var layerOrder=new Array();
+                        
+            var exp_RiverBanBaKhaminJSON = new L.geoJson(exp_RiverBanBaKhamin,{
+                    style: function (feature) {
+                        return {weight: 2,
+                                color: feature.properties.color_qgis2leaf,
+                                opacity: feature.properties.transp_qgis2leaf,
+                                fillOpacity: feature.properties.transp_qgis2leaf};
+                        }
+                    });
+                feature_group.addLayer(exp_RiverBanBaKhaminJSON);
+                layerOrder[layerOrder.length] = exp_RiverBanBaKhaminJSON;
+                for (index = 0; index < layerOrder.length; index++) {
+                    feature_group.removeLayer(layerOrder[index]);feature_group.addLayer(layerOrder[index]);
+                }
+                
+                        //add comment sign to hide this layer on the map in the initial view.
+            exp_RiverBanBaKhaminJSON.addTo(map);
+            
+            function pop_POIBanBaKhamin(feature, layer) {
+                                        
+                var popupContent = '<table><tr><th scope="row">Type</th><td>' + Autolinker.link(String(feature.properties['Type'])) + '</td></tr></table>';
+                layer.bindPopup(popupContent);
+
+
+                }
+                        
+                 exp_POIBanBaKhaminJSON = L.geoJson(exp_POIBanBaKhamin,{
+                        onEachFeature: pop_POIBanBaKhamin,
+                        style: function (feature) {
+                            return {fillColor: feature.properties.color_qgis2leaf,
+                                    color: '#000',
+                                    weight: 1,
+                                    opacity: feature.properties.transp_qgis2leaf,
+                                    fillOpacity: feature.properties.transp_qgis2leaf};
+                            }
+                        });
+                    feature_group.addLayer(exp_POIBanBaKhaminJSON);
+                    
+                //add comment sign to hide this layer on the map in the initial view.
+                exp_POIBanBaKhaminJSON.addTo(map);
+                        
+                var exp_RoadsBanBaKhaminJSON = new L.geoJson(exp_RoadsBanBaKhamin,{
+                    style: function (feature) {
+                        return {weight: 1,
+                                color: feature.properties.color_qgis2leaf,
+                                opacity: feature.properties.transp_qgis2leaf,
+                                fillOpacity: feature.properties.transp_qgis2leaf};
+                        }
+                    });
+                feature_group.addLayer(exp_RoadsBanBaKhaminJSON);
+                layerOrder[layerOrder.length] = exp_RoadsBanBaKhaminJSON;
+                for (index = 0; index < layerOrder.length; index++) {
+                    feature_group.removeLayer(layerOrder[index]);feature_group.addLayer(layerOrder[index]);
+                }
+                
+                        //add comment sign to hide this layer on the map in the initial view.
+                        exp_RoadsBanBaKhaminJSON.addTo(map);
+                        
+                var exp_VillageBoundsJSON = new L.geoJson(exp_VillageBounds,{
+                    style: function (feature) {
+                        return {color: feature.properties.border_color_qgis2leaf,
+                                fillColor: feature.properties.color_qgis2leaf,
+                                weight: 2,
+                                opacity: feature.properties.transp_qgis2leaf,
+                                fillOpacity: feature.properties.transp_qgis2leaf};
+                        }
+                    });
+                feature_group.addLayer(exp_VillageBoundsJSON);
+                layerOrder[layerOrder.length] = exp_VillageBoundsJSON;
+                for (index = 0; index < layerOrder.length; index++) {
+                    map.removeLayer(layerOrder[index]);map.addLayer(layerOrder[index]);
+                }
+                
+                        //add comment sign to hide this layer on the map in the initial view.
+                        exp_VillageBoundsJSON.addTo(map);
+                            function pop_Survey112414(feature, layer) {
+                                        
+    var popupContent = '<table><tr><th scope="row">Name</th><td>' + Autolinker.link(String(feature.properties['Name'])) + '</td></tr></table>';
+    layer.bindPopup(popupContent);
+
+
+                }
+                        
+                var exp_Survey112414JSON = new L.geoJson(exp_Survey112414,{
+                    onEachFeature: pop_Survey112414,
+                    pointToLayer: function (feature, latlng) {  
+                        return L.circleMarker(latlng, {
+                            radius: feature.properties.radius_qgis2leaf,
+                            fillColor: feature.properties.color_qgis2leaf,
+
+                            color: feature.properties.borderColor_qgis2leaf,
+                            weight: 0.5,
+                            opacity: feature.properties.transp_qgis2leaf,
+                            fillOpacity: feature.properties.transp_qgis2leaf
+                            })
+                        }
+                    });
+                                feature_group.addLayer(exp_Survey112414JSON);
+
+                layerOrder[layerOrder.length] = exp_Survey112414JSON;
+                for (index = 0; index < layerOrder.length; index++) {
+                    feature_group.removeLayer(layerOrder[index]);feature_group.addLayer(layerOrder[index]);
+                }
+                
+                        //add comment sign to hide this layer on the map in the initial view.
+                        exp_Survey112414JSON.addTo(map);
+        var title = new L.Control();
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>IUCN Ban Ba Khamin</h2>Project survey and community map'
+        };
+        title.addTo(map);
+
+
+        L.control.layers({},{"Survey Points Nov 14": exp_Survey112414JSON,"Village Bounds": exp_VillageBoundsJSON,"Roads": exp_RoadsBanBaKhaminJSON,"POIs": exp_POIBanBaKhaminJSON,"Khlong": exp_RiverBanBaKhaminJSON},{collapsed:false}).addTo(map);
+        L.control.scale({options: {position: 'bottomleft',maxWidth: 100,metric: true,imperial: false,updateWhenIdle: false}}).addTo(map);
+            
+        </script>
+        <div id="back-button"><a href="../index.html">Back to Projects</a></div>  
+	</body>
+</html>

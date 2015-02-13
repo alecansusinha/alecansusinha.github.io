@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html>
+<head> 
+	<title>Ban Ba Khamin - IUCN</title>
+	
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" /> <!-- we will us e this as the styling script for our webmap-->
+	<link rel="stylesheet" href="css/MarkerCluster.css" />
+	<link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+	<link rel="stylesheet" type="text/css" href="css/own_style.css">
+	<link rel="stylesheet" href="css/label.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> <!-- this is the javascript file that does the magic-->
+	<script src="js/Autolinker.min.js"></script>
+</head>
+<body>
+	<div id="map"></div> <!-- this is the initial look of the map. in most cases it is done externally using something like a map.css stylesheet were you can specify the look of map elements, like background color tables and so on.-->
+	<!--script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script--> <!-- this is the javascript file that does the magic-->
+	<script src="js/leaflet-hash.js"></script>
+	<script src="js/label.js"></script>
+	<script src="js/leaflet.markercluster.js"></script>
+	
+				<script src='data/exp_Survey112414.js' ></script>
+				
+				<script src='data/exp_VillageBounds.js' ></script>
+				
+				<script src='data/exp_RoadsBanBaKhamin.js' ></script>
+				
+				<script src='data/exp_POIBanBaKhamin.js' ></script>
+				
+				<script src='data/exp_RiverBanBaKhamin.js' ></script>
+				
+	<script>
+		var map = L.map('map', { zoomControl:true }).fitBounds([[13.9829797539,102.104964467],[13.9994012745,102.129319174]]);
+		var hash = new L.Hash(map); //add hashes to html address to easy share locations
+		var additional_attrib = 'created w. <a href="https://github.com/geolicious/qgis2leaf" target ="_blank">qgis2leaf</a> by <a href="http://www.geolicious.de" target ="_blank">Geolicious</a> & contributors<br>';
+	var feature_group = new L.featureGroup([]);
+
+	var raster_group = new L.LayerGroup([]);
+	
+		var basemap_0 = L.tileLayer('http://{s}.tiles.mapbox.com/v3/alecansusinha.kmbi51k6/{z}/{x}/{y}.png', { 
+            				attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    						maxZoom: 18
+						}).addTo(map);
+		basemap_0.addTo(map);	
+	var layerOrder=new Array();
+							function pop_RiverBanBaKhamin(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">id</th><td>' + Autolinker.link(String(feature.properties['id'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+				var exp_RiverBanBaKhaminJSON = new L.geoJson(exp_RiverBanBaKhamin,{
+					onEachFeature: pop_RiverBanBaKhamin,
+					style: function (feature) {
+						return {weight: feature.properties.radius_qgis2leaf,
+								color: feature.properties.color_qgis2leaf,
+								opacity: feature.properties.transp_qgis2leaf,
+								fillOpacity: feature.properties.transp_qgis2leaf};
+						}
+					});
+				feature_group.addLayer(exp_RiverBanBaKhaminJSON);
+				layerOrder[layerOrder.length] = exp_RiverBanBaKhaminJSON;
+				for (index = 0; index < layerOrder.length; index++) {
+					feature_group.removeLayer(layerOrder[index]);feature_group.addLayer(layerOrder[index]);
+				}
+				
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_RiverBanBaKhaminJSON.addTo(map);
+							function pop_POIBanBaKhamin(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">id</th><td>' + Autolinker.link(String(feature.properties['id'])) + '</td></tr><tr><th scope="row">Type</th><td>' + Autolinker.link(String(feature.properties['Type'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+					var exp_POIBanBaKhaminJSON = new L.geoJson(exp_POIBanBaKhamin,{
+						onEachFeature: pop_POIBanBaKhamin,
+						style: function (feature) {
+							return {fillColor: feature.properties.color_qgis2leaf,
+									color: '#000',
+									weight: 1,
+									opacity: feature.properties.transp_qgis2leaf,
+									fillOpacity: feature.properties.transp_qgis2leaf};
+							}
+						});
+					feature_group.addLayer(exp_POIBanBaKhaminJSON);
+					
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_POIBanBaKhaminJSON.addTo(map);
+							function pop_RoadsBanBaKhamin(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">id</th><td>' + Autolinker.link(String(feature.properties['id'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+				var exp_RoadsBanBaKhaminJSON = new L.geoJson(exp_RoadsBanBaKhamin,{
+					onEachFeature: pop_RoadsBanBaKhamin,
+					style: function (feature) {
+						return {weight: feature.properties.radius_qgis2leaf,
+								color: feature.properties.color_qgis2leaf,
+								opacity: feature.properties.transp_qgis2leaf,
+								fillOpacity: feature.properties.transp_qgis2leaf};
+						}
+					});
+				feature_group.addLayer(exp_RoadsBanBaKhaminJSON);
+				layerOrder[layerOrder.length] = exp_RoadsBanBaKhaminJSON;
+				for (index = 0; index < layerOrder.length; index++) {
+					feature_group.removeLayer(layerOrder[index]);feature_group.addLayer(layerOrder[index]);
+				}
+				
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_RoadsBanBaKhaminJSON.addTo(map);
+							function pop_VillageBounds(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">id</th><td>' + Autolinker.link(String(feature.properties['id'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+				var exp_VillageBoundsJSON = new L.geoJson(exp_VillageBounds,{
+					onEachFeature: pop_VillageBounds,
+					style: function (feature) {
+						return {color: feature.properties.border_color_qgis2leaf,
+								fillColor: feature.properties.color_qgis2leaf,
+								weight: feature.properties.radius_qgis2leaf,
+								opacity: feature.properties.transp_qgis2leaf,
+								fillOpacity: feature.properties.transp_qgis2leaf};
+						}
+					});
+				feature_group.addLayer(exp_VillageBoundsJSON);
+				layerOrder[layerOrder.length] = exp_VillageBoundsJSON;
+				for (index = 0; index < layerOrder.length; index++) {
+					map.removeLayer(layerOrder[index]);map.addLayer(layerOrder[index]);
+				}
+				
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_VillageBoundsJSON.addTo(map);
+							function pop_Survey112414(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">Name</th><td>' + Autolinker.link(String(feature.properties['Name'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+				var exp_Survey112414JSON = new L.geoJson(exp_Survey112414,{
+					onEachFeature: pop_Survey112414,
+					pointToLayer: function (feature, latlng) {  
+						return L.circleMarker(latlng, {
+							radius: feature.properties.radius_qgis2leaf,
+							fillColor: feature.properties.color_qgis2leaf,
+
+							color: feature.properties.borderColor_qgis2leaf,
+							weight: 1,
+							opacity: feature.properties.transp_qgis2leaf,
+							fillOpacity: feature.properties.transp_qgis2leaf
+							})
+						}
+					});
+								feature_group.addLayer(exp_Survey112414JSON);
+
+				layerOrder[layerOrder.length] = exp_Survey112414JSON;
+				for (index = 0; index < layerOrder.length; index++) {
+					feature_group.removeLayer(layerOrder[index]);feature_group.addLayer(layerOrder[index]);
+				}
+				
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_Survey112414JSON.addTo(map);
+		var title = new L.Control();
+		title.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			this.update();
+			return this._div;
+	    };
+	    title.update = function () {
+			this._div.innerHTML = '<h2>IUCN Ban Ba Khamin</h2>Project survey and community map'
+		};
+		title.addTo(map);
+	var baseMaps = {
+		'MapQuestOpen Aerial': basemap_0
+	};
+	L.control.layers(baseMaps,{"Survey112414": exp_Survey112414JSON,"VillageBounds": exp_VillageBoundsJSON,"RoadsBanBaKhamin": exp_RoadsBanBaKhaminJSON,"POIBanBaKhamin": exp_POIBanBaKhaminJSON,"RiverBanBaKhamin": exp_RiverBanBaKhaminJSON},{collapsed:false}).addTo(map);
+	L.control.scale({options: {position: 'bottomleft',maxWidth: 100,metric: true,imperial: false,updateWhenIdle: false}}).addTo(map);
+	</script>
+</body>
+
+</html>
+	
