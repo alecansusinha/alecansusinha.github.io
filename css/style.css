@@ -161,6 +161,7 @@ body{
 .va-slice ul li{
 	float: left;
     list-style: none;
+    margin-right: 5%;
 }
 
 .va-slice ul li img{
